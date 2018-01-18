@@ -4,7 +4,10 @@ block('page').content()(function() {
             block: 'header'
         },
         {
-            block: 'body'
+            block: 'body',
+            mods: {
+                view: this.ctx.mods.view
+            }
         },
         {
             block: 'footer'

@@ -28,16 +28,16 @@ function rebuild(event, file) {
     return make()
         .then(function() {
             console.timeEnd('Rebuild: ' + file);
-            notifier.notify({
-                title: 'bem-express',
-                message: 'Build finished'
-            });
+            // notifier.notify({
+            //     title: 'bem-express',
+            //     message: 'Build finished'
+            // });
         })
         .fail(function(err) {
-            notifier.notify({
-                title: 'Build failed',
-                message: err
-            });
+            // notifier.notify({
+            //     title: 'Build failed',
+            //     message: err
+            // });
         });
 }
 
@@ -50,6 +50,7 @@ process.env.NO_AUTOMAKE || watch([
 })), watchOpts).on('all', debouncedRebuild);
 
 // livereload
+process.env.NO_LIVERELOAD = true;
 process.env.NO_LIVERELOAD || watch([
     path.join(rootDir, 'static', '*.min.*'),
     path.join(bundlesDir, '*', '*.bemtree.js'),

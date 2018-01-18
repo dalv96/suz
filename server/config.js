@@ -2,5 +2,10 @@ module.exports = {
     staticFolder: 'static',
     defaultPort: 3000,
     cacheTTL: 30000,
-    sessionSecret: 'REPLACE_ME_WITH_RANDOM_STRING'
+    sessionSecret: 'sddn3o20fxn_sdsam3-e21@dd',
+    database: {
+        port: 27017,
+        url: "localhost",
+        name: "suz"
+    }
 };

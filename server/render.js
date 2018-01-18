@@ -14,13 +14,13 @@ var fs = require('fs'),
 
 function render(req, res, data, context) {
     var query = req.query,
-        user = req.user,
-        cacheKey = req.originalUrl + (context ? JSON.stringify(context) : '') + (user ? JSON.stringify(user) : ''),
-        cached = cache[cacheKey];
-
-    if (useCache && cached && (new Date() - cached.timestamp < cacheTTL)) {
-        return res.send(cached.html);
-    }
+        user = req.user;
+        // cacheKey = req.originalUrl + (context ? JSON.stringify(context) : '') + (user ? JSON.stringify(user) : ''),
+        // cached = cache[cacheKey];
+    //
+    // if (useCache && cached && (new Date() - cached.timestamp < cacheTTL)) {
+    //     return res.send(cached.html);
+    // }
 
     if (isDev && query.json) return res.send('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
 
@@ -52,10 +52,10 @@ function render(req, res, data, context) {
         return res.sendStatus(500);
     }
 
-    useCache && (cache[cacheKey] = {
-        timestamp: new Date(),
-        html: html
-    });
+    // useCache && (cache[cacheKey] = {
+    //     timestamp: new Date(),
+    //     html: html
+    // });
 
     res.send(html);
 }

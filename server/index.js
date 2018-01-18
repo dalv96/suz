@@ -12,22 +12,39 @@ var fs = require('fs'),
     expressSession = require('express-session'),
     slashes = require('connect-slashes'),
     passport = require('passport'),
-    // LocalStrategy = require('passport-local').Strategy,
+    LocalStrategy = require('passport-local').Strategy,
     // csrf = require('csurf'),
     compression = require('compression'),
+
+    common = require('./controllers/common'),
+    password = require('./controllers/password'),
 
     config = require('./config'),
     staticFolder = config.staticFolder,
 
-    Render = require('./render'),
-    render = Render.render,
-    dropCache = Render.dropCache, // eslint-disable-line no-unused-vars
+    router = require('./router'),
 
     port = process.env.PORT || config.defaultPort,
     isSocket = isNaN(port),
-    isDev = process.env.NODE_ENV === 'development';
+    isDev = process.env.NODE_ENV === 'development',
+
+    Account = require('./models/Account');
 
 require('debug-http')();
+
+morgan.token('date', function() {
+    var p = common.dateToExtStr(new Date());
+    return p;
+});
+
+morgan.token('user', function(req, res) {
+    return 'guest'
+});
+
+morgan.token('smart-url', function(req, res) {
+    if(req.originalUrl.length > 90) return req.originalUrl.substring(0, 70) + '.-.-.-.' + req.originalUrl.substring(req.originalUrl.length-20, req.originalUrl.length);
+    return req.originalUrl;
+});
 
 app
     .disable('x-powered-by')
@@ -35,7 +52,7 @@ app
     .use(compression())
     .use(favicon(path.join(staticFolder, 'favicon.ico')))
     .use(serveStatic(staticFolder))
-    .use(morgan('combined'))
+    .use(morgan('[HTTP] :date[web] <:user> :method :smart-url :status :res[header] - :response-time ms'))
     .use(cookieParser())
     .use(bodyParser.urlencoded({ extended: true }))
     .use(expressSession({
@@ -50,6 +67,22 @@ app
 // NOTE: conflicts with livereload
 isDev || app.use(slashes());
 
+passport.use('login', new LocalStrategy(
+    function(login, password, done) {
+        console.log('THIS WORKS');
+        Account.findOne({
+            login: login,
+            password: password.createHash(req.body.password)
+        }, function(err, user) {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { message: 'Fail authenticate.' });
+            }
+            return done(null, user);
+        });
+    }
+));
+
 passport.serializeUser(function(user, done) {
     done(null, JSON.stringify(user));
 });
@@ -58,30 +91,22 @@ passport.deserializeUser(function(user, done) {
     done(null, JSON.parse(user));
 });
 
-app.get('/ping/', function(req, res) {
-    res.send('ok');
-});
+app.get('*', function (req, res, next) {
+    if(!req.user && req.url != '/login') res.redirect('/login');
+    else next();
+})
 
-app.get('/', function(req, res) {
-    render(req, res, {
-        view: 'page-index',
-        title: 'Main page',
-        meta: {
-            description: 'Page description',
-            og: {
-                url: 'https://site.com',
-                siteName: 'Site name'
-            }
-        }
+app.post('/login',
+    passport.authenticate('login', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
     })
-});
+);
+
+router(app);
 
 isDev && require('./rebuild')(app);
-
-app.get('*', function(req, res) {
-    res.status(404);
-    return render(req, res, { view: '404' });
-});
 
 if (isDev) {
     app.get('/error/', function() {
