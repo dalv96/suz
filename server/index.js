@@ -10,14 +10,14 @@ var fs = require('fs'),
     serveStatic = require('serve-static'),
     cookieParser = require('cookie-parser'),
     expressSession = require('express-session'),
+    MongoStore = require('connect-mongo')(expressSession),
+    db = require('./controllers/connect').connections[0];
     slashes = require('connect-slashes'),
-    passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy,
+
     // csrf = require('csurf'),
     compression = require('compression'),
 
     common = require('./controllers/common'),
-    password = require('./controllers/password'),
 
     config = require('./config'),
     staticFolder = config.staticFolder,
@@ -26,9 +26,8 @@ var fs = require('fs'),
 
     port = process.env.PORT || config.defaultPort,
     isSocket = isNaN(port),
-    isDev = process.env.NODE_ENV === 'development',
+    isDev = process.env.NODE_ENV === 'development';
 
-    Account = require('./models/Account');
 
 require('debug-http')();
 
@@ -38,7 +37,8 @@ morgan.token('date', function() {
 });
 
 morgan.token('user', function(req, res) {
-    return 'guest'
+    if(req.user) return req.user.login;
+    else return 'guest';
 });
 
 morgan.token('smart-url', function(req, res) {
@@ -56,53 +56,25 @@ app
     .use(cookieParser())
     .use(bodyParser.urlencoded({ extended: true }))
     .use(expressSession({
-        resave: true,
-        saveUninitialized: true,
-        secret: config.sessionSecret
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 14 * 24 * 60 * 60 * 1000 // 2 недели
+        },
+        unset: 'destroy',
+        secret: config.sessionSecret,
+        store: new MongoStore({
+            mongooseConnection: db,
+            autoRemove: 'native',
+            ttl: 14 * 24 * 60 * 60,
+            touchAfter: 10 * 60,
+            stringify: true
+        })
     }))
-    .use(passport.initialize())
-    .use(passport.session())
     // .use(csrf());
 
 // NOTE: conflicts with livereload
 isDev || app.use(slashes());
-
-passport.use('login', new LocalStrategy(
-    function(login, password, done) {
-        console.log('THIS WORKS');
-        Account.findOne({
-            login: login,
-            password: password.createHash(req.body.password)
-        }, function(err, user) {
-            if (err) { return done(err); }
-            if (!user) {
-                return done(null, false, { message: 'Fail authenticate.' });
-            }
-            return done(null, user);
-        });
-    }
-));
-
-passport.serializeUser(function(user, done) {
-    done(null, JSON.stringify(user));
-});
-
-passport.deserializeUser(function(user, done) {
-    done(null, JSON.parse(user));
-});
-
-app.get('*', function (req, res, next) {
-    if(!req.user && req.url != '/login') res.redirect('/login');
-    else next();
-})
-
-app.post('/login',
-    passport.authenticate('login', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-    })
-);
 
 router(app);
 
@@ -120,5 +92,5 @@ isSocket && fs.existsSync(port) && fs.unlinkSync(port);
 
 app.listen(port, function() {
     isSocket && fs.chmod(port, '0777');
-    console.log('server is listening on', this.address().port);
+    console.log('Server is listening on', this.address().port);
 });
