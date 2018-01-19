@@ -1,4 +1,4 @@
-modules.define('form', ['i-bem-dom', 'location'], function(provide, bemDom, location) {
+modules.define('form', ['i-bem-dom', 'location', 'input'], function(provide, bemDom, location, Input) {
 
 provide(bemDom.declBlock('form',
     {

@@ -1,5 +1,6 @@
 ({
     shouldDeps: [
+        'input',
         'location'
     ]
 })

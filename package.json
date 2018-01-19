@@ -16,6 +16,7 @@
     "last 2 versions"
   ],
   "dependencies": {
+    "bem-history": "^4.0.0",
     "body-parser": "^1.15.0",
     "compression": "^1.6.2",
     "connect-mongo": "^2.0.1",

@@ -1,5 +1,5 @@
-modules.define('form', ['i-bem-dom', 'jquery', 'location', 'input'],
-    function(provide, bemDom, $, location, Input, Form) {
+modules.define('form', ['i-bem-dom', 'jquery', 'input'],
+    function(provide, bemDom, $, Input, Form) {
 
         provide(Form.declMod({ modName: 'type', modVal: 'login'},
             {
