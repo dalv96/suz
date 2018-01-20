@@ -20,7 +20,7 @@ module.exports = {
         }
 
         req.session.user = usr;
-        res.sendStatus(200);
+        res.send({url: '/'});
         return;
     },
 

@@ -1,6 +1,12 @@
 ({
     shouldDeps: [
         'location',
-        'input'
+        'input',
+        {
+            block: 'form',
+            mods: {
+                status: 'incorrect'
+            }
+        }
     ]
 })
