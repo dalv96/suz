@@ -8,7 +8,7 @@ var Auth = require('./controllers/auth');
 module.exports = function (app) {
 
     app.get('/login', function (req, res) {
-        if(req.user) res.redirect('/');
+        if(req.session.user) res.redirect('/');
         else return render(req, res, { view: 'login' })
     });
 
@@ -21,7 +21,7 @@ module.exports = function (app) {
     app.get('/', function(req, res) {
         render(req, res, { view: 'main' })
     });
-    
+
     app.get('/ping/', function(req, res) {
         res.send('ok');
     });
