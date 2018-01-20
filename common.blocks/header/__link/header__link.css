@@ -1,0 +1,56 @@
+.header__link.link
+{
+    display: inline-block;
+    line-height: 50px;
+    padding-right: 8px;
+    padding-left: 8px;
+
+    color: #fff;
+
+    text-decoration: none;
+    font-family: sans-serif;
+    font-weight: bold;
+
+    transition: 0.3s all ease-in-out;;
+}
+
+.header__link:hover.link
+{
+    background-color: #145b8e;
+    color: #fff;
+}
+
+.header__dropdown-link.link
+{
+    transition: 0s all;
+    width: 150px;
+    display: block;
+    padding: 5px 5px 5px 5px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.header__dropdown-link:hover.link
+{
+    color: #fff;
+    background-color: #1d7dbf;
+}
+
+.header__link_float_right
+{
+    float: right;
+}
+
+@media screen and (min-width: 1400px) {
+    .header__link.link
+    {
+        line-height: 65px;
+    }
+}
+
+@media screen and (min-width: 1930px) {
+    .header__link.link
+    {
+        line-height: 80px;
+    }
+}

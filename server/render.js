@@ -24,6 +24,7 @@ function render(req, res, data, context) {
 
     if (isDev && query.json) return res.send('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
 
+    data.user = user;
     var bemtreeCtx = {
         block: 'root',
         context: context,
