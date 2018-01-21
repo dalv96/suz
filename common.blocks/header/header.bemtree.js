@@ -1,159 +1,128 @@
 block('header').content()(function() {
     var user = this.data.user;
-
-    var navLinks = [
+    var ret = [
         {
-            type: 'link',
-            text: 'Главная',
+            block: 'link',
             url: '/',
-            access: !!user
+            content: [
+                {
+                    block: 'image',
+                    url: '/home.svg'
+                }
+            ],
+            mix: 'header__link'
         },
         {
-            type: 'link',
-            text: 'Поиск заявок',
+            block: 'link',
             url: '/search',
-            access: !!user
+            content: 'Поиск заказов',
+            mix: 'header__link'
         },
         {
-            type: 'link',
-            text: 'Статус',
+            block: 'link',
             url: '/status',
-            access: !!user
-        },
-        {
-            type: 'dropdown',
-            text: 'Администрирование',
-            // access: user && user.department.type == 'admin',
-            access: !!user,
+            content: 'Статус',
+            mix: 'header__link'
+        }];
+
+    if (user.department.type == 'admin')
+        ret.push({
+            block: 'dropdown',
+            mods: {
+                switcher: 'link',
+                theme: 'islands',
+                sime: 'l'
+            },
+            mix: 'header__link',
+            switcher: 'Администрирование',
             popup: [
                 {
-                    type: 'link',
-                    text: 'Учетные записи',
-                    url: '/admin/users'
+                    block: 'link',
+                    url: '/admin/users',
+                    mods: {
+                        theme: 'islands',
+                        size: 'l'
+                    },
+                    content: 'Учетные записи',
+                    mix: 'header__dropdown-link'
                 },
                 {
-                    type: 'link',
-                    text: 'Отделы',
-                    url: '/admin/departments'
+                    block: 'link',
+                    url: '/admin/department',
+                    mods: {
+                        theme: 'islands',
+                        size: 'l'
+                    },
+                    content: 'Отделы',
+                    mix: 'header__dropdown-link'
                 },
                 {
-                    type: 'link',
-                    text: 'Города',
-                    url: '/admin/cities'
+                    block: 'link',
+                    url: '/admin/cities',
+                    mods: {
+                        theme: 'islands',
+                        size: 'l'
+                    },
+                    content: 'Города',
+                    mix: 'header__dropdown-link'
                 },
                 {
-                    type: 'link',
-                    text: 'Улицы',
-                    url: '/admin/street'
+                    block: 'link',
+                    url: '/admin/streets',
+                    mods: {
+                        theme: 'islands',
+                        size: 'l'
+                    },
+                    content: 'Улицы',
+                    mix: 'header__dropdown-link'
                 },
                 {
-                    type: 'link',
-                    text: 'Клиенты',
-                    url: '/admin/clients'
+                    block: 'link',
+                    url: '/admin/clients',
+                    mods: {
+                        theme: 'islands',
+                        size: 'l'
+                    },
+                    content: 'Клиенты',
+                    mix: 'header__dropdown-link'
                 },
                 {
-                    type: 'link',
-                    text: 'Типы клиентов',
-                    url: '/admin/client-types'
+                    block: 'link',
+                    url: '/admin/providers',
+                    mods: {
+                        theme: 'islands',
+                        size: 'l'
+                    },
+                    content: 'Провайдеры',
+                    mix: 'header__dropdown-link'
                 },
                 {
-                    type: 'link',
-                    text: 'Провайдеры',
-                    url: '/admin/providers'
-                },
-                {
-                    type: 'link',
-                    text: 'Услуги',
-                    url: '/admin/services'
-                },
-                {
-                    type: 'link',
-                    text: 'Выходные',
-                    url: '/admin/holiday'
+                    block: 'link',
+                    url: '/admin/holidays',
+                    mods: {
+                        theme: 'islands',
+                        size: 'l'
+                    },
+                    content: 'Выходные',
+                    mix: 'header__dropdown-link'
                 }
             ]
-        },
-        {
-            type: 'link',
-            text: 'Выйти',
-            float: 'right',
-            url: '/logout',
-            access: !!user
-        },
-        {
-            type: 'link',
-            // text: (user)?`${user.login} [${user.department.name}]`:'',
-            text: (user)?user.login:'',
-            float: 'right',
-            url: '/profile',
-            access: !!user
-        }
-        // {
-        //     type: 'link',
-        //     float: 'right',
-        //     url: '/notifies',
-        //     text: [
-        //         (user && user.notifies>0)?`(${user.notifies})`:'',
-        //         {
-        //             block: 'icon',
-        //             url: (user && user.notifies>0)?'/alarm.svg':'/alarm-empty.png',
-        //             mix: (user && user.notifies>0)?'navigator__alarm':''
-        //         }
-        //     ],
-        //     access: user
-        // }
-    ];
+        });
 
-    var ret = [];
-
-    navLinks.forEach( item => {
-        if(item.access) {
-            switch (item.type) {
-                case 'link':
-                    ret.push({
-                        block: 'link',
-                        mix: {
-                            block: 'header',
-                            elem: 'link'
-                        },
-                        float: item.float,
-                        content: item.text,
-                        url: item.url
-                    })
-                    break;
-                case 'dropdown':
-                    var links = [];
-                    item.popup.forEach( it => {
-                        links.push({
-                            block: 'link',
-                            mods: {
-                                theme: 'islands',
-                                size: 'l'
-                            },
-                            mix: 'header__dropdown-link',
-                            url: it.url,
-                            content: it.text
-                        })
-                    });
-                    ret.push({
-                        block: 'dropdown',
-                        mods: {
-                            switcher: 'link',
-                            theme: 'islands',
-                            sime: 'l'
-                        },
-                        mix: {
-                            block: 'header',
-                            elem: 'link',
-                            float: item.float
-                        },
-                        switcher: item.text,
-                        popup: links
-                    })
-                    break;
-            }
-
-        }
+    ret.push({
+        block: 'link',
+        url: '/',
+        content: 'Выход',
+        mix: 'header__link',
+        float: 'right'
+    })
+    
+    ret.push({
+        block: 'link',
+        url: '/',
+        content: 'admin',
+        mix: 'header__link',
+        float: 'right'
     });
 
     return ret;

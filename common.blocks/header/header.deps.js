@@ -7,6 +7,9 @@
             }
         },
         {
+            block: 'image'
+        },
+        {
             block: 'dropdown',
             mods: {
                 theme: 'islands'

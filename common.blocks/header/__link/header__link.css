@@ -11,7 +11,18 @@
     font-family: sans-serif;
     font-weight: bold;
 
+    cursor: pointer;
+
     transition: 0.3s all ease-in-out;;
+}
+
+.header__link.link .image
+{
+    position: relative;
+    top: 6px;
+    height: 25px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .header__link:hover.link
@@ -23,7 +34,7 @@
 .header__dropdown-link.link
 {
     transition: 0s all;
-    width: 150px;
+    width: 170px;
     display: block;
     padding: 5px 5px 5px 5px;
     text-align: center;
