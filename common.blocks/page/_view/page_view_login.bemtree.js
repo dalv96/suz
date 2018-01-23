@@ -20,7 +20,8 @@ block('page').mod('view', 'login').content()(function () {
                     block: 'input',
                     mods: {
                         theme: 'islands',
-                        size: 'xl'
+                        size: 'xl',
+                        to: 'send'
                     },
                     name: 'login',
                     placeholder: 'Логин'
@@ -30,6 +31,7 @@ block('page').mod('view', 'login').content()(function () {
                     mods: {
                         theme: 'islands',
                         size: 'xl',
+                        to: 'send',
                         type: 'password'
                     },
                     name: 'password',

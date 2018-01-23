@@ -1,0 +1,10 @@
+.title__cell
+{
+    line-height: 75px;
+    display: inline-block;
+}
+
+.title__cell:last-child
+{
+    width: 100%;
+}

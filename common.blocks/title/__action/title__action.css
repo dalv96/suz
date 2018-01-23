@@ -1,0 +1,12 @@
+.title__action
+{
+    display: inline-block;
+    vertical-align: middle;
+
+    width: auto;
+}
+
+.title__action.button
+{
+    width: auto;
+}

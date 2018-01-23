@@ -1,0 +1,15 @@
+.title__search .button, .title__search .button::before
+{
+    border-radius: 0;
+}
+
+.title__search
+{
+    text-align: right;
+    margin-right: 20px;
+}
+
+.title__search .input
+{
+    width: 250px;
+}

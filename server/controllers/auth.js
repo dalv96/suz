@@ -1,6 +1,7 @@
 var Password = require('./password');
 
 var Account = require('../models/Account');
+var Department = require('../models/Department');
 
 module.exports = {
     singIn: async (req, res) => {
@@ -12,7 +13,7 @@ module.exports = {
         var usr = await Account.findOne({
             login: req.body.login,
             password: Password.createHash(req.body.password)
-        });
+        }).populate('department');
 
         if(!usr) {
             res.sendStatus(401);
@@ -32,6 +33,14 @@ module.exports = {
             if(req.url != '/login')
                 res.redirect('/login');
             return;
+        }
+    },
+
+    isAdmin: function (req, res, next) {
+        if (req.user.department.type == 'admin') {
+            next();
+        } else {
+            return res.render(req, res, { view: '404' });
         }
     },
 

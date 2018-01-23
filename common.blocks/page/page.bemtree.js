@@ -7,7 +7,8 @@ block('page').content()(function() {
             block: 'body',
             mods: {
                 view: this.ctx.mods.view
-            }
+            },
+            content: 'Страница не готова!'
         },
         {
             block: 'footer'

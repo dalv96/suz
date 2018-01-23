@@ -25,7 +25,7 @@ block('header').content()(function() {
             mix: 'header__link'
         }];
 
-    if (user.department.type == 'admin')
+    if (user && user.department.type == 'admin')
         ret.push({
             block: 'dropdown',
             mods: {
@@ -43,12 +43,12 @@ block('header').content()(function() {
                         theme: 'islands',
                         size: 'l'
                     },
-                    content: 'Учетные записи',
+                    content: 'Пользователи',
                     mix: 'header__dropdown-link'
                 },
                 {
                     block: 'link',
-                    url: '/admin/department',
+                    url: '/admin/departments',
                     mods: {
                         theme: 'islands',
                         size: 'l'
@@ -111,12 +111,12 @@ block('header').content()(function() {
 
     ret.push({
         block: 'link',
-        url: '/',
+        url: '/logout',
         content: 'Выход',
         mix: 'header__link',
         float: 'right'
     })
-    
+
     ret.push({
         block: 'link',
         url: '/',

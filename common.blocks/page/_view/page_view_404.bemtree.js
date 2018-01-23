@@ -1,3 +1,8 @@
 block('page').mod('view', '404').content()(function() {
-    return '404';
+    return [
+        {
+            block: 'header'
+        },
+        'Такой страницы не существует!'
+    ];
 });

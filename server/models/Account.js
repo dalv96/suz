@@ -20,11 +20,11 @@ var schema = mongoose.Schema( {
 	},
 	email : String,
 	phone : String,
-	// department : {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Department',
-	// 	required : true
-	// },
+	department : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Department',
+		required : true
+	},
 	status : {
 		type : Boolean,
 		required : true
