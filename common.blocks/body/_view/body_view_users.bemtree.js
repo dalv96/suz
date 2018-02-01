@@ -1,4 +1,6 @@
 block('body').mod('view', 'users').content()(function () {
+    var users = this.data.users;
+
     return [
         {
             block: 'title',
@@ -58,8 +60,23 @@ block('body').mod('view', 'users').content()(function () {
                         }
                     ]
                 }
-
             ]
-        }
+        },
+        {
+            block: 'wrap',
+            mods: {
+                type: 'handbook'
+            },
+            content: [
+                {
+                    block: 'table',
+                    mods: {
+                        type: 'users'
+                    },
+                    users: users
+                }
+            ]
+        },
+
     ];
 })

@@ -1,0 +1,23 @@
+.wrap_type_handbook
+{
+    margin-top: 135px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+@media screen and (min-width: 1400px) {
+    .wrap_type_handbook
+    {
+        margin-top: 140px;
+    }
+}
+
+@media screen and (min-width: 1930px) {
+    .wrap_type_handbook
+    {
+        margin-top: 165px;
+    }
+}

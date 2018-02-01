@@ -14,8 +14,20 @@
             }
         },
         {
+            block: 'wrap',
+            mods: {
+                type: 'handbook'
+            }
+        },
+        {
             block: 'title',
             elems: ['search', 'name', 'action', 'cell']
+        },
+        {
+            block: 'table',
+            mods: {
+                type: ['users']
+            }
         },
         {
             block: 'input',

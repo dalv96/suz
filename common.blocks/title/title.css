@@ -1,7 +1,28 @@
 .title
 {
-    height: 75px;
-    border-bottom: 1px solid #DDD;
+    position: fixed;
+    top: 50px;
 
+    height: 75px;
+    width: 100%;
+
+    background-color: white;
+    z-index: 999;
+
+    border-bottom: 1px solid #DDD;
     display: flex;
+}
+
+@media screen and (min-width: 1400px) {
+    .title
+    {
+        top: 65px;
+    }
+}
+
+@media screen and (min-width: 1930px) {
+    .title
+    {
+        top: 80px;
+    }
 }
